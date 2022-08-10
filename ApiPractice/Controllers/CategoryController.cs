@@ -20,7 +20,18 @@ namespace ApiPractice.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var query = _context.Categories.Where(c => !c.isDeleted);
+            CategoryListDto categoryListDto = new CategoryListDto();
+            categoryListDto.Items = query.Select(c => new CategoryReturnDto
+            {
+                Name = c.Name
+            }).ToList();
+            categoryListDto.TotalCount = query.Count();
+            return Ok(categoryListDto);
+        }
         [HttpPost]
         public IActionResult Create(CategoryCreateDto categoryCreateDto)
         {

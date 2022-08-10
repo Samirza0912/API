@@ -3,6 +3,7 @@ using ApiPractice.Dtos.ProductDtos;
 using ApiPractice.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace ApiPractice.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var query = _context.Products.Where(p => !p.isDeleted);
+            var query = _context.Products.Where(p => !p.isDeleted).Include(p=>p.Categories.Name);
             ProductListDto productListDto = new ProductListDto();
             productListDto.Items = query.Select(p=>new ProductReturnDto
             {
