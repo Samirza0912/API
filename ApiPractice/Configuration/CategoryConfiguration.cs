@@ -14,6 +14,7 @@ namespace ApiPractice.Configuration
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.Property(p => p.Name).HasMaxLength(20).IsRequired(true);
+            builder.Property(p => p.CreatedTime).HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

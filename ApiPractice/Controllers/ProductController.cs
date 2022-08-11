@@ -1,11 +1,14 @@
 ﻿using ApiPractice.Data;
 using ApiPractice.Dtos.ProductDtos;
+using ApiPractice.Extentions;
 using ApiPractice.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,10 +19,12 @@ namespace ApiPractice.Controllers
     public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public ProductController(AppDbContext context)
+        public ProductController(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
         [HttpGet("{id}")]
         public IActionResult GetOne(int id)
@@ -33,31 +38,43 @@ namespace ApiPractice.Controllers
             productReturnDto.Name = product.Name;
             productReturnDto.Price = product.Price;
             productReturnDto.isActive = product.isActive;
+            productReturnDto.ImageUrl = "http://localhost:5635/img/" + product.ImageUrl;
 
             return Ok(productReturnDto);
          }
         [HttpGet]
         public IActionResult GetAll()
         {
-            var query = _context.Products.Where(p => !p.isDeleted).Include(p=>p.Categories.Name);
+            var query = _context.Products.AsQueryable();
             ProductListDto productListDto = new ProductListDto();
             productListDto.Items = query.Select(p=>new ProductReturnDto
             {
                 Name = p.Name,
                 Price = p.Price,
-                isActive = p.isActive
-            }).Skip(1).Take(1).ToList();
+                isActive = p.isActive,
+                ImageUrl = "http://localhost:5635/img/" + p.ImageUrl
+            }).ToList();
             productListDto.TotalCount = query.Count();
              return Ok(productListDto);
         }
         [HttpPost]
-        public IActionResult Create(ProductCreateDto productCreateDto)
+        public IActionResult Create([FromForm]ProductCreateDto productCreateDto)
         {
+            bool isExist = _context.Categories.Any(p => p.Name.ToLower() == productCreateDto.Name.ToLower());
+            if (productCreateDto.Photo.IsImage())
+            {
+                return BadRequest();
+            }
+            if (productCreateDto.Photo.ValidSize(200))
+            {
+                return BadRequest();
+            }
             Product p = new Product
             {
                 Name = productCreateDto.Name,
                 Price = productCreateDto.Price,
-                isActive = productCreateDto.isActive
+                isActive = productCreateDto.isActive,
+                ImageUrl = productCreateDto.Photo.SaveImage(_env, "img")
             };
             if (productCreateDto==null)
             {
@@ -68,18 +85,29 @@ namespace ApiPractice.Controllers
             return Ok(p);
         }
         [HttpPut("{id}")]
-        public IActionResult Update(ProductUpdateDto productUpdateDto, int id)
+        public IActionResult Update([FromForm]ProductUpdateDto productUpdateDto, int id)
         {
             Product newProduct = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (_context.Categories.Any(p => p.Name.ToLower() == productUpdateDto.Name.ToLower() && newProduct.Id != id))
+            {
+                return BadRequest();
+
+            }
             if (newProduct == null)
             {
                 return NotFound();
             }
-            newProduct.Name = productUpdateDto.Name;
+            string path = Path.Combine(_env.WebRootPath, "img", newProduct.ImageUrl);
+            if (productUpdateDto.Photo != null)
+            {
+                Helpers.Helper.DeleteImage(path);
+            }
             newProduct.Price = productUpdateDto.Price;
             newProduct.isActive = productUpdateDto.isActive;
+            newProduct.Name = productUpdateDto.Name;
             _context.SaveChanges();
-            return Ok(newProduct);
+            return Ok();
+
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(int? id)

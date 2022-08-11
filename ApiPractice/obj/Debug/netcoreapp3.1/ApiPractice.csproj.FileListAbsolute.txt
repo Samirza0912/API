@@ -39,3 +39,7 @@ C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\obj\Debug\netcoreapp3.1\ApiPractic
 C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\obj\Debug\netcoreapp3.1\ApiPractice.dll
 C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\obj\Debug\netcoreapp3.1\ApiPractice.pdb
 C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\obj\Debug\netcoreapp3.1\ApiPractice.genruntimeconfig.cache
+C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\bin\Debug\netcoreapp3.1\FluentValidation.dll
+C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
+C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\ASUS\Desktop\ApiPractice\ApiPractice\obj\Debug\netcoreapp3.1\ApiPractice.MvcApplicationPartsAssemblyInfo.cs

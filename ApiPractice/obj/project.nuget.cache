@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "XK+euuGogZsSAOtdoFiexrFrDTHWDnJ8Rlvm2F0ZNikcizBFHd/n3MYh/qKfQxwBdgE/kA6+1Nl/6NBYB2RuXQ==",
+  "dgSpecHash": "M0QaJfSgYtSylSgefh9zN/D6//vDG/qHJw0DgrDLmY/sb+hm9QFSl9QObmkXwpFUtMudC6w7BKie95UgLT9Xog==",
   "success": true,
   "projectFilePath": "C:\\Users\\ASUS\\Desktop\\ApiPractice\\ApiPractice\\ApiPractice.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ASUS\\.nuget\\packages\\fluentvalidation\\11.2.0\\fluentvalidation.11.2.0.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.2.1\\fluentvalidation.aspnetcore.11.2.1.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.2.0\\fluentvalidation.dependencyinjectionextensions.11.2.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.0\\microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
