@@ -1,8 +1,10 @@
 ﻿using ApiPractice.Data;
 using ApiPractice.Dtos.CategoryDtos;
 using ApiPractice.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,22 +17,35 @@ namespace ApiPractice.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
         public CategoryController(AppDbContext context)
         {
             _context = context;
         }
+        [HttpGet("{Id}")]
+        public IActionResult GetOne(int id)
+        {
+            Category c = _context.Categories.Include(c => c.Products).FirstOrDefault(p => p.Id == id && !p.isDeleted);
+            if (c==null)
+            {
+                return NotFound();
+            }
+            CategoryReturnDto categoryReturnDto = _mapper.Map<CategoryReturnDto>(c);
+            return Ok(categoryReturnDto);
+        }
         [HttpGet]
         public IActionResult GetAll()
         {
             var query = _context.Categories.Where(c => !c.isDeleted);
-            CategoryListDto categoryListDto = new CategoryListDto();
-            categoryListDto.Items = query.Select(c => new CategoryReturnDto
-            {
-                Name = c.Name
-            }).ToList();
-            categoryListDto.TotalCount = query.Count();
-            return Ok(categoryListDto);
+            //CategoryListDto categoryListDto = new CategoryListDto();
+            //categoryListDto.Items = query.Select(c => new CategoryReturnDto
+            //{
+            //    Name = c.Name
+            //}).ToList();
+            //categoryListDto.TotalCount = query.Count();
+            CategoryReturnDto categoryReturnDto = _mapper.Map<CategoryReturnDto>(query);
+            return Ok(categoryReturnDto);
         }
         [HttpPost]
         public IActionResult Create(CategoryCreateDto categoryCreateDto)

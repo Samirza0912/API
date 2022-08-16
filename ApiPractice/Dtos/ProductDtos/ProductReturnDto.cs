@@ -14,5 +14,11 @@ namespace ApiPractice.Dtos.ProductDtos
         public bool isActive { get; set; }
         public string ImageUrl { get; set; }
         public IFormFile Photo { get; set; }
+        public ProductCategoryDto Category { get; set; }
+    }
+    public class ProductCategoryDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

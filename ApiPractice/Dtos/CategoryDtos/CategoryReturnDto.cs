@@ -7,6 +7,7 @@ namespace ApiPractice.Dtos.CategoryDtos
 {
     public class CategoryReturnDto
     {
+        public int ProductCount { get; set; }
         public string Name { get; set; }
     }
 }

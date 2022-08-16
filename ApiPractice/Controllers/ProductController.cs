@@ -2,6 +2,7 @@
 using ApiPractice.Dtos.ProductDtos;
 using ApiPractice.Extentions;
 using ApiPractice.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,13 @@ namespace ApiPractice.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IMapper _mapper;
 
-        public ProductController(AppDbContext context, IWebHostEnvironment env)
+        public ProductController(AppDbContext context, IWebHostEnvironment env, IMapper mapper)
         {
             _context = context;
             _env = env;
+            _mapper = mapper;
         }
         [HttpGet("{id}")]
         public IActionResult GetOne(int id)
@@ -34,11 +37,12 @@ namespace ApiPractice.Controllers
             {
                 return NotFound();
             }
-            ProductReturnDto productReturnDto = new ProductReturnDto();
-            productReturnDto.Name = product.Name;
-            productReturnDto.Price = product.Price;
-            productReturnDto.isActive = product.isActive;
-            productReturnDto.ImageUrl = "http://localhost:5635/img/" + product.ImageUrl;
+            //ProductReturnDto productReturnDto = new ProductReturnDto();
+            //productReturnDto.Name = product.Name;
+            //productReturnDto.Price = product.Price;
+            //productReturnDto.isActive = product.isActive;
+            //productReturnDto.ImageUrl = "http://localhost:5635/img/" + product.ImageUrl;
+            ProductReturnDto productReturnDto = _mapper.Map<ProductReturnDto>(product);
 
             return Ok(productReturnDto);
          }
