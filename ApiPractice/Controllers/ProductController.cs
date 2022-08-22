@@ -86,7 +86,7 @@ namespace ApiPractice.Controllers
             }
             _context.Products.Add(p);
             _context.SaveChanges();
-            return Ok(p);
+            return Ok();
         }
         [HttpPut("{id}")]
         public IActionResult Update([FromForm]ProductUpdateDto productUpdateDto, int id)
